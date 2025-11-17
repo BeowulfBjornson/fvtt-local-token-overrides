@@ -251,6 +251,19 @@ Hooks.on("renderActorSheetPF2e", (sheet, html, data) => {
   const actor = sheet.actor;
   if (!actor) return;
 
+  if (actor.type === "party") {
+    const overrides = getOverrides();
+
+    if (html.length > 0) {
+      Object.keys(overrides).forEach(function(actorId) {
+        const img = html[0].querySelector(`section.member[data-actor-uuid="Actor.${actorId}"] > div.portrait img`)
+        if (img) img.src = overrides[actorId];
+      });
+    }
+    
+    return;
+  }
+
   const overridePath = getActorOverridePath(actor.id);
   if (!overridePath) return;
 
